@@ -29,4 +29,14 @@ class AuthController extends Controller
             ->with('error', 'Correo o contraseña incorrectos')
             ->withInput();
     }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
 }
