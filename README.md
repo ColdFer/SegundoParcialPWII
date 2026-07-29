@@ -1,58 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestión de Servicios - Taller Automotriz
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descripción
 
-## About Laravel
+Sistema web desarrollado en Laravel para la gestión de servicios de un taller automotriz.
+El sistema cuenta con autenticación manual y un módulo de servicios donde cada registro queda asociado automáticamente al usuario autenticado.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Pruebas de funcionamiento
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 1. El Login es la primera pantalla
 
-## Learning Laravel
+Al ingresar al sistema mediante:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+http://127.0.0.1:8000
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+se muestra directamente la pantalla de inicio de sesión.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Resultado:
+✅ El usuario no autenticado es dirigido al formulario Login.
 
-## Agentic Development
+![Login inicial](screenshots/01-login.png)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
-```bash
-composer require laravel/boost --dev
+## 2. Existen al menos dos usuarios
 
-php artisan boost:install
-```
+Se registraron dos usuarios en la base de datos MySQL:
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Usuario 1:
+- Nombre: Administrador
+- Correo: admin@gmail.com
 
-## Contributing
+Usuario 2:
+- Nombre: Usuario Prueba
+- Correo: usuario@gmail.com
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Las contraseñas se almacenan utilizando Hash de Laravel.
 
-## Code of Conduct
+Resultado:
+✅ Existen dos usuarios registrados.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+![Usuarios registrados](screenshots/02-usuarios.png)
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 3. Ambos usuarios pueden iniciar sesión
 
-## License
+Se realizaron pruebas iniciando sesión con ambos usuarios.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Usuario Administrador:
+
+Correo:
+admin@gmail.com
+
+Contraseña:
+******
+
+
+Usuario Prueba:
+
+Correo:
+usuario@gmail.com
+
+Contraseña:
+******
+
+
+Resultado:
+✅ Ambos usuarios pueden autenticarse correctamente.
+
+![Login usuario administrador](screenshots/03-login-admin.png)
+
+![Login usuario prueba](screenshots/04-login-usuario.png)
+
+---
+
+## 4. Cada usuario registra servicios
+
+Usuario Administrador registró:
+
+- Servicio: revision
+
+Usuario Prueba registró:
+
+- Servicio: misegundaprueba
+
+
+Resultado:
+✅ Cada usuario puede registrar servicios.
+
+![Registro de servicios](screenshots/06-listado-servicios.png)
+
+---
+
+## 5. Los servicios se almacenan en MySQL
+
+Los servicios registrados se almacenan en la tabla:
+
+servicios
+
+de la base de datos:
+
+segundoparcialpwii
+
+
+Resultado:
+✅ Los registros aparecen almacenados en MySQL.
+
+![Tabla servicios MySQL](screenshots/07-mysql-servicios.png)
+
+---
+
+## 6. La tabla muestra correctamente el usuario que registró cada servicio
+
+El listado de servicios muestra la relación entre servicio y usuario:
+
+| Servicio | Usuario |
+|---|---|
+| misegundaprueba | Usuario Prueba |
+| revision | Administrador |
+
+
+Resultado:
+✅ Cada servicio muestra correctamente el usuario que lo creó.
+
+![Listado servicios](screenshots/07-mysql-servicios.png)
+
+---
+
+## 7. Logout funciona correctamente
+
+Al presionar el botón:
+
+Cerrar sesión
+
+el sistema destruye la sesión y retorna al Login.
+
+Resultado:
+✅ Logout funcionando correctamente.
+
+![Logout](screenshots/08-middleware-auth.png)
+
+---
+
+## 8. No es posible acceder a Servicios sin autenticación
+
+Al intentar acceder directamente a:
+
+http://127.0.0.1:8000/servicios
+
+sin iniciar sesión:
+
+Resultado:
+✅ El sistema redirige al Login debido al middleware auth.
+
+![Middleware autenticación](screenshots/08-middleware-auth.png)
