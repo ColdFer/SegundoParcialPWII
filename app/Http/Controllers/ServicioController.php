@@ -35,6 +35,8 @@ class ServicioController extends Controller
 
         Servicio::create($datos);
 
-        return redirect('/servicios')->with('success', 'Servicio registrado correctamente.');
+        return redirect()
+        ->route('servicios.index')
+        ->with('success', 'Servicio registrado correctamente.');
     }
 }
